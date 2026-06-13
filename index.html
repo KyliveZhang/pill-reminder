@@ -7,8 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="theme-color" content="#FF6B6B">
     <title>吃药提醒</title>
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIuWQjeiSmeaPkOmGkiIsCiAgInNob3J0X25hbWUiOiAi5ZCN6JKZIiwKICAic3RhcnRfdXJsIjogIi4iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmZmZmZmYiLAogICJ0aGVtZV9jb2xvciI6ICIjRkY2QjZCIiwKICAiaWNvbnMiOiBbXQp9">
-    <style>
+    <link rel="manifest" href="manifest.webmanifest">
         :root {
             --primary: #FF6B6B;
             --primary-dark: #E55A5A;
@@ -912,11 +911,9 @@
             document.getElementById('btnTestNotify').addEventListener('click', handleNotificationTest);
 
             // Service Worker
-            if('serviceWorker' in navigator){
-                const swCode = `self.addEventListener('install',e=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('push',e=>{const d=e.data?e.data.json():{};self.registration.showNotification(d.title||'吃药提醒',{body:d.body||'',icon:'💊',tag:'pill-reminder',requireInteraction:true,vibrate:[300,150,300,150,500]});});self.addEventListener('notificationclick',e=>{e.notification.close();e.waitUntil(self.clients.matchAll({type:'window'}).then(c=>{if(c.length>0)c[0].focus();else self.clients.openWindow('/');}));});`;
-                const swBlob = new Blob([swCode],{type:'application/javascript'});
-                navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(()=>{});
-            }
+           if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
 
             function init() {
                 loadData();
